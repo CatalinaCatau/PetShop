@@ -1,8 +1,16 @@
 package com.catalinacatau.petshop.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "products")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Product {
 
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String name;
     private String category;
     private String type;
@@ -12,7 +20,7 @@ public class Product {
     public Product() {
     }
 
-    public Product(int id, String name, String category, String type, double price, int quantity) {
+    public Product(Long id, String name, String category, String type, double price, int quantity) {
         this.id = id;
         this.name = name;
         this.category = category;
@@ -21,11 +29,11 @@ public class Product {
         this.quantity = quantity;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
