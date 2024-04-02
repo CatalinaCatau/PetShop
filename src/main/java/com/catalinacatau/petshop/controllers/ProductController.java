@@ -21,6 +21,11 @@ public class ProductController {
         return productService.getProductById(id);
     }
 
+    @GetMapping("/products")
+    ResponseEntity<?> getProductByCategoryAndType(@RequestParam(required = false) String category, @RequestParam(required = false) String type) {
+        return productService.getProductByCategoryAndType(category, type);
+    }
+
     @PostMapping("/products")
     ResponseEntity<?> addProduct(@RequestBody Product product) {
         return productService.addProduct(product);
