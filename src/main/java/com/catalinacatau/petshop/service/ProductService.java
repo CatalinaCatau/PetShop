@@ -24,7 +24,7 @@ public class ProductService {
         ResponseEntity<?> response = null;
         Optional<Product> optionalProduct = productRepository.findById(id);
 
-        if(optionalProduct.isPresent()){
+        if (optionalProduct.isPresent()) {
             response = new ResponseEntity<>(optionalProduct.get(), HttpStatus.OK);
         } else {
             response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -37,17 +37,17 @@ public class ProductService {
         ResponseEntity<?> response = null;
         List<Product> productList;
 
-        if(category != null && type != null) {
+        if (category != null && type != null) {
             productList = productRepository.findProductsByCategoryAndType(category, type);
-        } else if(category !=null) {
+        } else if (category != null) {
             productList = productRepository.findProductsByCategory(category);
-        } else if (type != null){
+        } else if (type != null) {
             productList = productRepository.findProductsByType(type);
         } else {
             productList = productRepository.findAll();
         }
 
-        if(productList.isEmpty()){
+        if (productList.isEmpty()) {
             response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             response = new ResponseEntity<>(productList, HttpStatus.OK);
@@ -62,8 +62,8 @@ public class ProductService {
 
         List<Product> productList = productRepository.findAll();
 
-        for(int i = 0; i < productList.size(); i++) {
-            if(productList.get(i).getName() == null) {
+        for (int i = 0; i < productList.size(); i++) {
+            if (productList.get(i).getName() == null) {
                 productList.remove(i);
                 i--;
             } else {
@@ -77,7 +77,7 @@ public class ProductService {
             }
         }
 
-        if(productList.isEmpty()){
+        if (productList.isEmpty()) {
             response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             response = new ResponseEntity<>(productList, HttpStatus.OK);
