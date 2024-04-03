@@ -27,8 +27,15 @@ public class ProductController {
         return productService.getProductByCategoryAndType(category, type);
     }
 
+    @GetMapping("/products/search")
+    ResponseEntity<?> getProductByCategoryAndType(@RequestParam String name) {
+        return productService.getProductByName(name);
+    }
+
     @PostMapping("/products")
     ResponseEntity<?> addProduct(@Valid @RequestBody Product product) {
         return productService.addProduct(product);
     }
+
+
 }

@@ -37,8 +37,6 @@ public class ProductService {
         ResponseEntity<?> response = null;
         List<Product> productList;
 
-        System.out.println("aici" + category + " " + type);
-
         if(category != null && type != null) {
             productList = productRepository.findProductsByCategoryAndType(category, type);
         } else if(category !=null) {
@@ -47,6 +45,36 @@ public class ProductService {
             productList = productRepository.findProductsByType(type);
         } else {
             productList = productRepository.findAll();
+        }
+
+        if(productList.isEmpty()){
+            response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            response = new ResponseEntity<>(productList, HttpStatus.OK);
+        }
+
+        return response;
+    }
+
+    public ResponseEntity<?> getProductByName(String name) {
+        ResponseEntity<?> response = null;
+        String[] keywords = name.split("[,\\s]+");
+
+        List<Product> productList = productRepository.findAll();
+
+        for(int i = 0; i < productList.size(); i++) {
+            if(productList.get(i).getName() == null) {
+                productList.remove(i);
+                i--;
+            } else {
+                for (String keyword : keywords) {
+                    if (!productList.get(i).getName().toLowerCase().contains(keyword.toLowerCase())) {
+                        productList.remove(i);
+                        i--;
+                        break;
+                    }
+                }
+            }
         }
 
         if(productList.isEmpty()){
@@ -70,4 +98,6 @@ public class ProductService {
 
         return response;
     }
+
+
 }
