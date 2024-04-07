@@ -19,14 +19,14 @@ public class Product {
     @NotNull
     private String type;
     @NotNull
-    private double price;
+    private Double price;
     @NotNull
-    private int quantity;
+    private Integer quantity;
 
     public Product() {
     }
 
-    public Product(Long id, String name, String category, String type, double price, int quantity) {
+    public Product(Long id, String name, String category, String type, Double price, Integer quantity) {
         this.id = id;
         this.name = name;
         this.category = category;
@@ -67,19 +67,19 @@ public class Product {
         this.type = type;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 }
