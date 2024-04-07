@@ -24,7 +24,7 @@ public class CartController {
 
     @PostMapping("/cart")
     public ResponseEntity<?> createShoppingCart(@RequestBody ShoppingCart shoppingCart) {
-        return cartService.createCart(shoppingCart);
+        return cartService.createShoppingCart(shoppingCart);
     }
 
     @GetMapping("/cart/{shoppingCartId}")

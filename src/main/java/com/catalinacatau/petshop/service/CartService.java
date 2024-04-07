@@ -34,7 +34,7 @@ public class CartService {
 
         List<ShoppingCart> shoppingCartList = shoppingCartRepository.findAll();
 
-        if(shoppingCartList.isEmpty()) {
+        if (shoppingCartList.isEmpty()) {
             response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             response = new ResponseEntity<>(shoppingCartList, HttpStatus.OK);
@@ -43,7 +43,7 @@ public class CartService {
         return response;
     }
 
-    public ResponseEntity<?> createCart(ShoppingCart shoppingCart) {
+    public ResponseEntity<?> createShoppingCart(ShoppingCart shoppingCart) {
         ResponseEntity<?> response = null;
 
         try {
@@ -71,15 +71,25 @@ public class CartService {
 
     public ResponseEntity<?> addItemsToCart(Long shoppingCartId, ProductDto productDto) {
         ResponseEntity<?> response = null;
+        CartItem cartItem = null;
 
-        CartItem cartItem = new CartItem();
-        cartItem.setShoppingCartId(shoppingCartId);
-        cartItem.setProductId(productDto.getId());
-        cartItem.setQuantity(productDto.getQuantity());
+        Optional<CartItem> optionalCartItem = cartItemRepository.findByShoppingCartIdAndProductId(shoppingCartId, productDto.getId());
+
+        if (optionalCartItem.isPresent()) {
+            cartItem = optionalCartItem.get();
+            int newQuantity = cartItem.getQuantity() + productDto.getQuantity();
+
+            cartItem.setQuantity(newQuantity);
+        } else {
+            cartItem = new CartItem();
+            cartItem.setShoppingCartId(shoppingCartId);
+            cartItem.setProductId(productDto.getId());
+            cartItem.setQuantity(productDto.getQuantity());
+        }
 
         try {
-            CartItem insertedCartItem = cartItemRepository.saveAndFlush(cartItem);
-            response = new ResponseEntity<>(insertedCartItem, HttpStatus.CREATED);
+            cartItem = cartItemRepository.saveAndFlush(cartItem);
+            response = new ResponseEntity<>(cartItem, HttpStatus.OK);
         } catch (Exception e) {
             response = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -98,6 +108,7 @@ public class CartService {
 
             if (newQuantity > 0) {
                 cartItem.setQuantity(newQuantity);
+
                 try {
                     cartItem = cartItemRepository.saveAndFlush(cartItem);
                     response = new ResponseEntity<>(cartItem, HttpStatus.OK);
