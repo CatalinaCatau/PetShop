@@ -19,7 +19,6 @@ public class CartController {
 
     @GetMapping("/cart")
     public ResponseEntity<?> getAllShoppingCarts() {
-        System.out.println("HERE");
         return cartService.getAllShoppingCarts();
     }
 
