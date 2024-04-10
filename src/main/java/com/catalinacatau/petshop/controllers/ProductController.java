@@ -29,7 +29,7 @@ public class ProductController {
     }
 
     @GetMapping("/products/search")
-    ResponseEntity<?> getProductByCategoryAndType(@RequestParam String name) {
+    ResponseEntity<?> getProductByName(@RequestParam String name) {
         return productService.getProductByName(name);
     }
 
