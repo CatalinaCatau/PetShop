@@ -1,7 +1,7 @@
-package com.catalinacatau.petshop.service;
+package com.catalinacatau.petshop.services;
 
 import com.catalinacatau.petshop.entities.Product;
-import com.catalinacatau.petshop.repository.ProductRepository;
+import com.catalinacatau.petshop.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

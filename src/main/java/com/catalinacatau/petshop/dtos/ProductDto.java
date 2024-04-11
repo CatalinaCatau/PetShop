@@ -1,4 +1,4 @@
-package com.catalinacatau.petshop.dto;
+package com.catalinacatau.petshop.dtos;
 
 import jakarta.validation.constraints.NotNull;
 

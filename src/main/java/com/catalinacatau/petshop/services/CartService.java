@@ -1,11 +1,11 @@
-package com.catalinacatau.petshop.service;
+package com.catalinacatau.petshop.services;
 
-import com.catalinacatau.petshop.dto.ProductDto;
+import com.catalinacatau.petshop.dtos.ProductDto;
 import com.catalinacatau.petshop.entities.CartItem;
 import com.catalinacatau.petshop.entities.ShoppingCart;
-import com.catalinacatau.petshop.repository.CartItemRepository;
-import com.catalinacatau.petshop.repository.ProductRepository;
-import com.catalinacatau.petshop.repository.ShoppingCartRepository;
+import com.catalinacatau.petshop.repositories.CartItemRepository;
+import com.catalinacatau.petshop.repositories.ProductRepository;
+import com.catalinacatau.petshop.repositories.ShoppingCartRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -1,8 +1,8 @@
 package com.catalinacatau.petshop.controllers;
 
-import com.catalinacatau.petshop.dto.ProductDto;
+import com.catalinacatau.petshop.dtos.ProductDto;
 import com.catalinacatau.petshop.entities.ShoppingCart;
-import com.catalinacatau.petshop.service.CartService;
+import com.catalinacatau.petshop.services.CartService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

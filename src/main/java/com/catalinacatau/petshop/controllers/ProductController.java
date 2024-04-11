@@ -1,7 +1,7 @@
 package com.catalinacatau.petshop.controllers;
 
 import com.catalinacatau.petshop.entities.Product;
-import com.catalinacatau.petshop.service.ProductService;
+import com.catalinacatau.petshop.services.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.catalinacatau.petshop.repository;
+package com.catalinacatau.petshop.repositories;
 
 import com.catalinacatau.petshop.entities.CartItem;
 import org.springframework.data.jpa.repository.JpaRepository;
