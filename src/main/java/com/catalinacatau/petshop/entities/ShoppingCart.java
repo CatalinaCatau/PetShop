@@ -10,16 +10,17 @@ public class ShoppingCart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long clientId;
+
+    private Long userId;
     private Double totalCost;
 
 
     public ShoppingCart() {
     }
 
-    public ShoppingCart(Long id, Long clientId, Double totalCost) {
+    public ShoppingCart(Long id, Long userId, Double totalCost) {
         this.id = id;
-        this.clientId = clientId;
+        this.userId = userId;
         this.totalCost = totalCost;
     }
 
@@ -31,12 +32,12 @@ public class ShoppingCart {
         this.id = id;
     }
 
-    public Long getClientId() {
-        return clientId;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setClientId(Long clientId) {
-        this.clientId = clientId;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public Double getTotalCost() {
