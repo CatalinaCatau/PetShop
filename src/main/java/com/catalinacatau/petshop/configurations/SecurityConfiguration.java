@@ -25,7 +25,6 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authz -> authz
                 .requestMatchers("/api/users").permitAll()
-                .requestMatchers("/api/**").permitAll()
                 .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())
