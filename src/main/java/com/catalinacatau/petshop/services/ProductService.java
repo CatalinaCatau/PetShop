@@ -118,15 +118,19 @@ public class ProductService {
             if (newProduct.getName() != null) {
                 product.setName(newProduct.getName());
             }
+
             if (newProduct.getCategory() != null) {
                 product.setCategory(newProduct.getCategory());
             }
+
             if (newProduct.getType() != null) {
                 product.setType(newProduct.getType());
             }
+
             if (newProduct.getPrice() != null) {
                 product.setPrice(newProduct.getPrice());
             }
+
             if (newProduct.getQuantity() != null) {
                 product.setQuantity(newProduct.getQuantity());
             }
