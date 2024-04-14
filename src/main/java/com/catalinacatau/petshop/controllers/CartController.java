@@ -1,7 +1,6 @@
 package com.catalinacatau.petshop.controllers;
 
 import com.catalinacatau.petshop.dtos.ProductDto;
-import com.catalinacatau.petshop.entities.ShoppingCart;
 import com.catalinacatau.petshop.services.CartService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -17,33 +16,33 @@ public class CartController {
         this.cartService = shoppingCartService;
     }
 
-    @GetMapping("/cart")
+    @GetMapping("/carts")
     public ResponseEntity<?> getAllShoppingCarts() {
         return cartService.getAllShoppingCarts();
     }
 
-    @PostMapping("/cart")
-    public ResponseEntity<?> createShoppingCart(@RequestBody ShoppingCart shoppingCart) {
-        return cartService.createShoppingCart(shoppingCart);
-    }
-
-    @GetMapping("/cart/{shoppingCartId}")
+    @GetMapping("/carts/{shoppingCartId}")
     public ResponseEntity<?> getCartById(@PathVariable Long shoppingCartId) {
         return cartService.getCartById(shoppingCartId);
     }
 
-    @PostMapping("/cart/{shoppingCartId}/add-to-cart")
-    public ResponseEntity<?> addItemsToCart(@PathVariable Long shoppingCartId, @Valid @RequestBody ProductDto productDto) {
-        return cartService.addItemsToCart(shoppingCartId, productDto);
+    @GetMapping("/cart")
+    public ResponseEntity<?> getCart() {
+        return cartService.getCart();
     }
 
-    @DeleteMapping("/cart/{shoppingCartId}/remove-from-cart")
-    public ResponseEntity<?> removeItemsFromCart(@PathVariable Long shoppingCartId, @Valid @RequestBody ProductDto productDto) {
-        return cartService.removeItemsFromCart(shoppingCartId, productDto);
+    @PostMapping("/cart/add-to-cart")
+    public ResponseEntity<?> addItemsToCart(@Valid @RequestBody ProductDto productDto) {
+        return cartService.addItemsToCart(productDto);
     }
 
-    @DeleteMapping("/cart/{shoppingCartId}")
-    public ResponseEntity<?> clearCartById(@PathVariable Long shoppingCartId) {
-        return cartService.clearCartById(shoppingCartId);
+    @DeleteMapping("/cart/remove-from-cart")
+    public ResponseEntity<?> removeItemsFromCart(@Valid @RequestBody ProductDto productDto) {
+        return cartService.removeItemsFromCart(productDto);
+    }
+
+    @DeleteMapping("/cart/clear-cart")
+    public ResponseEntity<?> clearCart() {
+        return cartService.clearCart();
     }
 }
