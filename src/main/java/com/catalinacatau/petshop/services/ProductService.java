@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,6 +51,13 @@ public class ProductService {
         if (productList.isEmpty()) {
             response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
+            productList.sort(new Comparator<Product>() {
+                @Override
+                public int compare(Product p1, Product p2) {
+                    return Long.compare(p1.getId(), p2.getId());
+                }
+            });
+
             response = new ResponseEntity<>(productList, HttpStatus.OK);
         }
 
@@ -99,5 +107,55 @@ public class ProductService {
         return response;
     }
 
+    public ResponseEntity<?> updateProductById(Long id, Product newProduct) {
+        ResponseEntity<?> response = null;
 
+        Optional<Product> optionalProduct = productRepository.findById(id);
+
+        if (optionalProduct.isPresent()) {
+            Product product = optionalProduct.get();
+
+            if (newProduct.getName() != null) {
+                product.setName(newProduct.getName());
+            }
+            if (newProduct.getCategory() != null) {
+                product.setCategory(newProduct.getCategory());
+            }
+            if (newProduct.getType() != null) {
+                product.setType(newProduct.getType());
+            }
+            if (newProduct.getPrice() != null) {
+                product.setPrice(newProduct.getPrice());
+            }
+            if (newProduct.getQuantity() != null) {
+                product.setQuantity(newProduct.getQuantity());
+            }
+
+            try {
+                Product updatedProduct = productRepository.saveAndFlush(product);
+                response = new ResponseEntity<>(updatedProduct, HttpStatus.OK);
+            } catch (Exception e) {
+                response = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } else {
+            response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return response;
+    }
+
+    public ResponseEntity<?> deleteProductById(Long id) {
+        ResponseEntity<?> response = null;
+
+        Optional<Product> optionalProduct = productRepository.findById(id);
+
+        if (optionalProduct.isPresent()) {
+            productRepository.delete(optionalProduct.get());
+            response = new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return response;
+    }
 }
