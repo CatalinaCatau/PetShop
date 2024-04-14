@@ -23,6 +23,16 @@ public class UserController {
         return userService.getUsers();
     }
 
+    @GetMapping("/users/id/{id}")
+    public ResponseEntity<?> getUserById(@PathVariable Long id) {
+        return userService.getUserById(id);
+    }
+
+    @GetMapping("/users/{username}")
+    public ResponseEntity<?> getUserByUsername(@PathVariable String username) {
+        return userService.getUserByUsername(username);
+    }
+
     @PostMapping("/users")
     public ResponseEntity<?> addUser(@Valid @RequestBody User user) {
         return userService.addUser(user);

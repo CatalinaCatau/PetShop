@@ -2,6 +2,7 @@ package com.catalinacatau.petshop.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "shoppingcarts")
@@ -10,9 +11,9 @@ public class ShoppingCart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @NotNull
     private Long userId;
-    private Double totalCost;
+    private Double totalCost = 0.0;
 
 
     public ShoppingCart() {
