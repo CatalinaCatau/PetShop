@@ -27,7 +27,7 @@ public class SecurityConfiguration {
         http.authorizeHttpRequests(authz -> authz
                         .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/users", "/api/users/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/api/products", "/api/products/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/products", "/api/products/**").permitAll()
                         .requestMatchers("/api/products", "/api/products/**").hasRole("ADMIN")
                         .requestMatchers("/api/carts", "/api/carts/**").hasRole("ADMIN")
                         .requestMatchers("/api/cart", "/api/cart/**").hasAnyRole("USER", "ADMIN")
