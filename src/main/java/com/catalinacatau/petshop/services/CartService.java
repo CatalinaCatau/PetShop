@@ -1,7 +1,10 @@
 package com.catalinacatau.petshop.services;
 
+import com.catalinacatau.petshop.dtos.CartDto;
+import com.catalinacatau.petshop.dtos.CartItemDto;
 import com.catalinacatau.petshop.dtos.ProductDto;
 import com.catalinacatau.petshop.entities.CartItem;
+import com.catalinacatau.petshop.entities.Product;
 import com.catalinacatau.petshop.entities.ShoppingCart;
 import com.catalinacatau.petshop.entities.User;
 import com.catalinacatau.petshop.repositories.CartItemRepository;
@@ -16,6 +19,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.List;
 import java.util.Optional;
@@ -71,13 +75,32 @@ public class CartService {
         if (shoppingCartId == -1) {
             response = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         } else {
-
             List<CartItem> shoppingCart = cartItemRepository.findByShoppingCartId(shoppingCartId);
 
             if (shoppingCart.isEmpty()) {
                 response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
             } else {
-                response = new ResponseEntity<>(shoppingCart, HttpStatus.OK);
+                CartDto shoppingCartDto = new CartDto();
+
+                for(CartItem cartItem : shoppingCart) {
+                    CartItemDto cartItemDto = new CartItemDto();
+                    Optional<Product> optionalProduct = productRepository.findById(cartItem.getProductId());
+
+                    if(optionalProduct.isPresent()) {
+                        Product product = optionalProduct.get();
+
+                        cartItemDto.setProductName(product.getName());
+                        cartItemDto.setQuantity(cartItem.getQuantity());
+                        cartItemDto.setTotalPrice(product.getPrice() * cartItem.getQuantity());
+
+                        shoppingCartDto.addCartItem(cartItemDto);
+                    }
+                }
+
+                Double totalCost = updateShoppingCartTotalCost(shoppingCartId);
+                shoppingCartDto.setTotalCost(totalCost);
+
+                response = new ResponseEntity<>(shoppingCartDto, HttpStatus.OK);
             }
 
         }
@@ -94,25 +117,32 @@ public class CartService {
             response = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         } else {
 
-            Optional<CartItem> optionalCartItem = cartItemRepository.findByShoppingCartIdAndProductId(shoppingCartId, productDto.getId());
+            Optional<Product> optionalProduct = productRepository.findById(productDto.getId());
 
-            if (optionalCartItem.isPresent()) {
-                cartItem = optionalCartItem.get();
-                int newQuantity = cartItem.getQuantity() + productDto.getQuantity();
+            if (optionalProduct.isPresent()) {
 
-                cartItem.setQuantity(newQuantity);
+                Optional<CartItem> optionalCartItem = cartItemRepository.findByShoppingCartIdAndProductId(shoppingCartId, productDto.getId());
+
+                if (optionalCartItem.isPresent()) {
+                    cartItem = optionalCartItem.get();
+                    int newQuantity = cartItem.getQuantity() + productDto.getQuantity();
+
+                    cartItem.setQuantity(newQuantity);
+                } else {
+                    cartItem = new CartItem();
+                    cartItem.setShoppingCartId(shoppingCartId);
+                    cartItem.setProductId(productDto.getId());
+                    cartItem.setQuantity(productDto.getQuantity());
+                }
+
+                try {
+                    cartItem = cartItemRepository.saveAndFlush(cartItem);
+                    response = new ResponseEntity<>(cartItem, HttpStatus.OK);
+                } catch (Exception e) {
+                    response = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
             } else {
-                cartItem = new CartItem();
-                cartItem.setShoppingCartId(shoppingCartId);
-                cartItem.setProductId(productDto.getId());
-                cartItem.setQuantity(productDto.getQuantity());
-            }
-
-            try {
-                cartItem = cartItemRepository.saveAndFlush(cartItem);
-                response = new ResponseEntity<>(cartItem, HttpStatus.OK);
-            } catch (Exception e) {
-                response = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
         }
 
@@ -183,5 +213,31 @@ public class CartService {
         }
 
         return -1L;
+    }
+
+    private Double updateShoppingCartTotalCost(Long shoppingCartId) {
+        List<CartItem> cartItems = cartItemRepository.findByShoppingCartId(shoppingCartId);
+
+        Double totalCost = 0.0;
+
+        for(CartItem cartItem : cartItems) {
+            Optional<Product> optionalProduct = productRepository.findById(cartItem.getProductId());
+
+            if(optionalProduct.isPresent()) {
+                totalCost += (optionalProduct.get().getPrice() * cartItem.getQuantity());
+            }
+        }
+
+        Optional<ShoppingCart> optionalShoppingCart = shoppingCartRepository.findById(shoppingCartId);
+
+        if(optionalShoppingCart.isPresent()) {
+            ShoppingCart shoppingCart = optionalShoppingCart.get();
+            shoppingCart.setTotalCost(totalCost);
+            shoppingCartRepository.saveAndFlush(shoppingCart);
+
+            return totalCost;
+        } else {
+            throw new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
