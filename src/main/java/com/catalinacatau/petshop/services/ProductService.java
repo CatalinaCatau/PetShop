@@ -96,6 +96,7 @@ public class ProductService {
 
     public ResponseEntity<?> addProduct(Product product) {
         ResponseEntity<?> response = null;
+        product.setId(null);
 
         try {
             Product insertedProduct = productRepository.saveAndFlush(product);
