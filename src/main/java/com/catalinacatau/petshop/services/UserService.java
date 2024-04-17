@@ -80,6 +80,7 @@ public class UserService {
 
     public ResponseEntity<?> addUser(User user) {
         ResponseEntity<?> response = null;
+        user.setId(null);
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 

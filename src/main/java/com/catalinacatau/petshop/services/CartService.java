@@ -116,7 +116,6 @@ public class CartService {
         if (shoppingCartId == -1) {
             response = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         } else {
-
             Optional<Product> optionalProduct = productRepository.findById(productDto.getId());
 
             if (optionalProduct.isPresent()) {
