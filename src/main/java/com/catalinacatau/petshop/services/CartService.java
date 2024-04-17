@@ -89,9 +89,9 @@ public class CartService {
                     cartItemDto.setProductName(product.getName());
                     cartItemDto.setQuantity(cartItem.getQuantity());
                     cartItemDto.setTotalPrice(product.getPrice() * cartItem.getQuantity());
-                }
 
-                shoppingCartDto.addCartItem(cartItemDto);
+                    shoppingCartDto.addCartItem(cartItemDto);
+                }
             }
 
             Double totalCost = updateShoppingCartTotalCost(shoppingCartId);
