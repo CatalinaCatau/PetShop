@@ -3,14 +3,14 @@ package com.catalinacatau.petshop.dtos;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CartDto {
+public class ShoppingCartDto {
     private List<CartItemDto> cartItems = new ArrayList<>();
     private Double totalCost;
 
-    public CartDto() {
+    public ShoppingCartDto() {
     }
 
-    public CartDto(List<CartItemDto> cartItems, Double totalCost) {
+    public ShoppingCartDto(List<CartItemDto> cartItems, Double totalCost) {
         this.cartItems = cartItems;
         this.totalCost = totalCost;
     }
