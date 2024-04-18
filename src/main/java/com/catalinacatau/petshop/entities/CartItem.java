@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "cartitems", uniqueConstraints = {@UniqueConstraint(columnNames = {"shoppingCartId", "productId"})})
+@Table(name = "cart_items", uniqueConstraints = {@UniqueConstraint(columnNames = {"shoppingCartId", "productId"})})
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class CartItem {
     @Id

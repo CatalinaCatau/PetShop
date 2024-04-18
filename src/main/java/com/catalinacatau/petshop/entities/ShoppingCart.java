@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "shoppingcarts")
+@Table(name = "shopping_carts")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class ShoppingCart {
     @Id
